@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>WCF Test</h1>
+</div>
+<label>ID:</label><input type="text" id="id" class="fieldsClear" />
+<label>First Name:</label><input type="text" id="fName" class="fieldsClear"/>
+<label>Last Name:</label><input type="text" id="lName" class="fieldsClear"/>
+<label>Designation:</label><input type="text" id="designation" class="fieldsClear"/>
+<button onclick="postTrainee()">Submit</button>
+
+<br />
+<div id="submission" class="hidden">
+    <div>Trainee "<span id="traineeName"></span>" is added successfully.</div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    function postTrainee() {
+        var trainee = {
+            Id: $('#id').val(),
+            FirstName: $('#fName').val(),
+            LastName: $('#lName').val(),
+            Designation: $('#designation').val()
+        }
+        
+        var dataToSend = JSON.stringify(trainee);
+        
+        $.ajax({
+            url: "/Home/Submit",
+            type:'POST',
+            data: {
+              trainee : dataToSend
+            },
+            success: function (result) {
+                $('#traineeName').html(result);  
+                $('.fieldsClear').val('');
+                $('#submission').removeClass('hidden');
+                              
+            },
+            error: function (xHjR) {
+                console.log("Ajax Error", xHjR);
+            }
+
+        })
+    }
+</script>
